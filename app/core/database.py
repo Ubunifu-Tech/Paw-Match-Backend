@@ -8,41 +8,33 @@ Author: PawMatch Team
 Version: 1.0.0
 """
 
-import os
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.orm import declarative_base
 from app.core.config import get_settings
 
-# Base class for all models - created first to avoid circular imports
+settings = get_settings()
+
+# Create async engine
+engine = create_async_engine(
+    settings.database_url,
+    echo=settings.debug,
+    future=True,
+    pool_pre_ping=True,
+    pool_size=10,
+    max_overflow=20
+)
+
+# Create async session factory
+AsyncSessionLocal = async_sessionmaker(
+    engine,
+    class_=AsyncSession,
+    expire_on_commit=False,
+    autocommit=False,
+    autoflush=False
+)
+
+# Base class for all models
 Base = declarative_base()
-
-# Only create engine and session if not running Alembic
-# Alembic sets ALEMBIC_CONFIG environment variable
-if not os.environ.get('ALEMBIC_CONFIG'):
-    settings = get_settings()
-    
-    # Create async engine
-    engine = create_async_engine(
-        settings.database_url,
-        echo=settings.debug,
-        future=True,
-        pool_pre_ping=True,
-        pool_size=10,
-        max_overflow=20
-    )
-
-    # Create async session factory
-    AsyncSessionLocal = async_sessionmaker(
-        engine,
-        class_=AsyncSession,
-        expire_on_commit=False,
-        autocommit=False,
-        autoflush=False
-    )
-else:
-    # Placeholder for Alembic - these won't be used
-    engine = None
-    AsyncSessionLocal = None
 
 
 async def get_db():

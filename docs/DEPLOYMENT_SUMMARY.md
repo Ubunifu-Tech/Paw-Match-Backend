@@ -139,7 +139,6 @@ Test endpoints:
 5. **Configure Build**
    - Build Command: `pip install -r requirements.txt`
    - Start Command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-   - Deploy Command: `alembic upgrade head`
 
 6. **Deploy**
    - Click "Deploy"
@@ -242,7 +241,7 @@ apiClient.interceptors.response.use(
 
 ### Development
 - [x] SECRET_KEY set in `.env`
-- [x] Database migrations applied
+- [x] Database connection configured
 - [x] All tests passing
 - [x] No hardcoded secrets
 - [x] CORS configured for localhost
@@ -254,7 +253,7 @@ apiClient.interceptors.response.use(
 - [ ] Set DEBUG=False
 - [ ] Enable HTTPS (automatic on Railway)
 - [ ] Configure CORS for production frontend
-- [ ] Run database migrations
+- [ ] Verify database connection
 - [ ] Test all endpoints
 - [ ] Monitor logs
 - [ ] Set up error tracking (Sentry, etc.)
@@ -354,7 +353,7 @@ Limits reset daily at midnight UTC.
 - [x] Authentication & authorization implemented
 - [x] Rate limiting configured
 - [x] Database models finalized
-- [x] Migrations created
+- [x] Database schema designed
 - [x] API documentation complete
 - [x] Error handling implemented
 - [x] Logging configured
@@ -366,7 +365,7 @@ Limits reset daily at midnight UTC.
 - [ ] Environment variables set
 - [ ] SECRET_KEY generated (production)
 - [ ] FRONTEND_URL configured
-- [ ] Migrations applied
+- [ ] Database connection verified
 - [ ] Backend deployed
 - [ ] Health check passing
 

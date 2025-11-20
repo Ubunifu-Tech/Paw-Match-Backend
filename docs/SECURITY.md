@@ -150,10 +150,10 @@ DEBUG=False
    - Disable `/docs` and `/redoc` in production (or add authentication)
    - Use API keys for external access if needed
 
-10. **Database Migrations**
-    - Review all migrations before applying
+10. **Database Management**
+    - Review all schema changes before applying
     - Test in staging environment first
-    - Backup database before migrations
+    - Backup database before any changes
 
 ## Security Best Practices
 

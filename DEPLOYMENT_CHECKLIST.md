@@ -7,14 +7,13 @@
 - ✅ All dependencies install successfully
 - ✅ FastAPI app imports without errors
 - ✅ Database URL validator handles Railway postgres:// format
-- ✅ Alembic migrations present and ready
 - ✅ nixpacks.toml configured correctly
 - ✅ railway.toml configured correctly
 - ✅ Procfile configured correctly
 
 ### Configuration Files
 - ✅ `nixpacks.toml` - Python 3.11, PostgreSQL, GCC
-- ✅ `railway.toml` - NIXPACKS builder, auto-migrations
+- ✅ `railway.toml` - NIXPACKS builder
 - ✅ `Procfile` - Uvicorn start command
 - ✅ `.env.example` - Documents all required environment variables
 
@@ -66,10 +65,10 @@ Go to Frontend service → Variables tab and add:
 
 ## ⚠️ Important Notes
 
-### Database Migrations
-- Migrations run automatically on startup (configured in railway.toml)
-- First deployment will take ~30-60 seconds to run all migrations
-- Check logs for migration status: `alembic upgrade head`
+### Database Setup
+- Database tables are created automatically by SQLAlchemy on first run
+- Use scripts to load initial data (breeds, etc.)
+- For schema changes, manage manually or use custom scripts
 
 ### CORS Configuration
 - Backend allows `FRONTEND_URL` and `http://localhost:3000`
@@ -103,17 +102,17 @@ Once deployed, test:
 - Verify CORS: `FRONTEND_URL` must match frontend Railway URL
 - Test backend `/health` endpoint directly
 
-### Migrations fail
+### Database connection issues
 - Check PostgreSQL service is running
+- Verify DATABASE_URL is correct (should use postgresql+asyncpg://)
 - View logs: Railway dashboard → Backend service → Logs
-- Manually run: `python3 -m alembic upgrade head`
 
 ## 📊 Post-Deployment Verification
 
 1. ✅ Backend /health endpoint returns 200
 2. ✅ Frontend loads without errors
 3. ✅ Frontend can call backend API
-4. ✅ Database migrations completed
+4. ✅ Database connection established
 5. ✅ Redis connection working
 6. ✅ User registration/login works
 7. ✅ AI chat functionality works

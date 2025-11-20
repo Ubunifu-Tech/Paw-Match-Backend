@@ -262,7 +262,7 @@ Before deploying to production:
 - [ ] Enable HTTPS/TLS
 - [ ] Configure CORS for production frontend URL
 - [ ] Set `DEBUG=False`
-- [ ] Review and apply database migrations
+- [ ] Review and verify database schema
 - [ ] Set up monitoring and logging
 - [ ] Configure backup strategy
 - [ ] Review API rate limits for production load

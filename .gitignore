@@ -51,7 +51,4 @@ htmlcov/
 # OS
 .DS_Store
 Thumbs.db
-
-# Alembic
-alembic/versions/__pycache__/
 *.pyc

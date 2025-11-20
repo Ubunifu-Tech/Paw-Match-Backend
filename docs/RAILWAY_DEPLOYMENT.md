@@ -16,7 +16,6 @@ Railway provides:
 
 ### 1. **Ensure All Files Are Ready**
 - [x] `requirements.txt` with all dependencies
-- [x] Database migrations in `alembic/versions/`
 - [x] `.env.example` for reference
 - [x] `Procfile` or Railway will auto-detect FastAPI
 
@@ -25,14 +24,6 @@ Railway provides:
 openssl rand -hex 32
 ```
 **Save this key** - you'll add it to Railway environment variables.
-
-### 3. **Verify Database Models**
-Ensure all migrations are created:
-```bash
-cd backend
-alembic revision --autogenerate -m "final migration check"
-alembic upgrade head
-```
 
 ---
 
@@ -135,31 +126,15 @@ Railway should auto-detect, but verify:
 
 3. **Root Directory**: Set to `backend` if your repo has multiple folders
 
-### **Step 6: Run Database Migrations**
-
-After first deployment:
-
-1. Go to Railway project → **"Settings"** → **"Service"**
-2. Under **"Deploy"**, add a **"Deploy Command"**:
-   ```bash
-   alembic upgrade head
-   ```
-
-Or run manually via Railway CLI:
-```bash
-railway run alembic upgrade head
-```
-
-### **Step 7: Deploy**
+### **Step 6: Deploy**
 
 1. Click **"Deploy"**
 2. Railway will:
    - Install dependencies
-   - Run migrations
    - Start the application
 3. Monitor logs in the **"Deployments"** tab
 
-### **Step 8: Get Your URL**
+### **Step 7: Get Your URL**
 
 1. Go to **"Settings"** → **"Networking"**
 2. Click **"Generate Domain"**
@@ -181,9 +156,6 @@ railway login
 
 # Link to your project
 railway link
-
-# Run commands in Railway environment
-railway run alembic upgrade head
 
 # View logs
 railway logs
@@ -286,18 +258,6 @@ psql postgresql://user:pass@host:port/db
 # Or use GUI tool (TablePlus, pgAdmin, etc.)
 ```
 
-### **Run Migrations**
-```bash
-# Via Railway CLI
-railway run alembic upgrade head
-
-# Rollback
-railway run alembic downgrade -1
-
-# Check current version
-railway run alembic current
-```
-
 ### **Database Backups**
 Railway provides automatic backups:
 - Go to PostgreSQL service
@@ -344,15 +304,15 @@ railway variables | grep DATABASE_URL
 # Should be: postgresql+asyncpg://...
 ```
 
-### **Issue: Migrations Not Running**
+### **Issue: Database Connection Failed**
 
 **Solution:**
 ```bash
-# Manually run migrations
-railway run alembic upgrade head
+# Check database URL format
+railway variables | grep DATABASE_URL
 
-# Check migration status
-railway run alembic current
+# Should be: postgresql+asyncpg://...
+# If not, update your config.py validator
 ```
 
 ### **Issue: Module Not Found**
@@ -465,7 +425,7 @@ Before going live:
 - [ ] `SECRET_KEY` is strong and unique
 - [ ] `DEBUG=False`
 - [ ] `FRONTEND_URL` set to production domain
-- [ ] Database migrations applied
+- [ ] Database connection verified
 - [ ] CORS configured correctly
 - [ ] HTTPS enabled (automatic on Railway)
 - [ ] API documentation disabled or protected

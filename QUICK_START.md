@@ -11,12 +11,12 @@ pip install -r requirements.txt
 ### 2. Configure Environment
 ```bash
 cp .env.example .env
-# Edit .env and add your GEMINI_API_KEY
+# Edit .env and add your GEMINI_API_KEY and DATABASE_URL
 ```
 
-### 3. Setup Database
+### 3. Initialize Database (Optional - tables auto-create on first run)
 ```bash
-alembic upgrade head
+python scripts/init_database.py
 ```
 
 ### 4. Start Server

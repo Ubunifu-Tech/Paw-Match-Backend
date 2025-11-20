@@ -31,19 +31,16 @@ DATABASE_URL=postgresql+asyncpg://postgres:YOUR_PASSWORD@localhost:5432/dogmatch
 DATABASE_URL=postgresql+asyncpg://dogmatch_user:your_secure_password@localhost:5432/dogmatch
 ```
 
-## Step 3: Run Migrations
+## Step 3: Initialize Database Schema
+
+The database tables will be created automatically when you first start the application. SQLAlchemy will create all tables defined in your models.
 
 ```bash
-# Activate virtual environment
-cd backend
-source venv/bin/activate
-
-# Create initial migration
-alembic revision --autogenerate -m "Initial migration: sessions and saved results"
-
-# Apply migration
-alembic upgrade head
+# Simply start the application and tables will be created
+uvicorn app.main:app --reload
 ```
+
+Alternatively, you can create tables manually using a Python script if needed.
 
 ## Step 4: Verify Database
 
@@ -58,7 +55,9 @@ psql -d dogmatch
 # - sessions
 # - chat_messages
 # - saved_results
-# - alembic_version
+# - users
+# - breeds
+# - favorites
 
 # Check table structure
 \d sessions
@@ -110,10 +109,10 @@ brew services start postgresql@14
 Once the database is set up:
 
 1. ✅ Database tables created
-2. ✅ Migrations configured
-3. ⏭️ Update ConversationAgent to use database instead of in-memory storage
-4. ⏭️ Implement session persistence
-5. ⏭️ Add saved results functionality
+2. ✅ Database connection configured
+3. ⏭️ Load initial breed data using scripts
+4. ⏭️ Test API endpoints
+5. ⏭️ Set up data backup procedures
 
 ## Database Schema
 
@@ -148,18 +147,21 @@ Once the database is set up:
 ## Useful Commands
 
 ```bash
-# Create new migration
-alembic revision --autogenerate -m "Description"
+# Connect to database
+psql -d dogmatch
 
-# Apply all pending migrations
-alembic upgrade head
+# List all tables
+\dt
 
-# Rollback one migration
-alembic downgrade -1
+# Describe table structure
+\d table_name
 
-# Show current migration version
-alembic current
+# View table data
+SELECT * FROM table_name LIMIT 10;
 
-# Show migration history
-alembic history
+# Export schema
+pg_dump -s dogmatch > schema.sql
+
+# Backup database
+pg_dump dogmatch > backup.sql
 ```

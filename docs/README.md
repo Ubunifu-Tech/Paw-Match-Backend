@@ -7,7 +7,7 @@ Complete documentation for the PawMatch backend API.
 ### Getting Started
 
 - **[Main README](../README.md)** - Quick start guide and installation
-- **[Database Setup](DATABASE_SETUP.md)** - PostgreSQL configuration and migrations
+- **[Database Setup](DATABASE_SETUP.md)** - PostgreSQL configuration and schema management
 - **[Application Workflow](APPLICATION_WORKFLOW.md)** - Complete user journey and API flows
 
 ### Deployment
