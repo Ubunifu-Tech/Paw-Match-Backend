@@ -1,9 +1,10 @@
-# 🐾 PawMatch - Backend API
+# 🐾 PawMatch - AI-Powered Dog Breed Matching
 
 **Find Your Perfect Paw-tner!**
 
-AI-powered dog breed matching system using FastAPI, Google Gemini 2.0, and PostgreSQL.
-PawMatch helps users discover their ideal canine companion through conversational AI.
+> **DataCamp Competition Entry**: This project was developed for the DataCamp AI-Powered Dog Breed Matching competition, demonstrating advanced AI/ML techniques for personalized recommendations.
+
+AI-powered dog breed matching system using FastAPI, Google Gemini 2.0 Flash, PostgreSQL, and Redis. PawMatch helps users discover their ideal canine companion through conversational AI, smart matching algorithms, and personalized content generation.
 
 ## ✅ Status
 
@@ -125,7 +126,91 @@ The backend integrates with the [Dog-Breeds-Dataset](https://github.com/maartenv
 3. Serve images from local storage or CDN
 4. Update `image_service.py` with correct paths
 
-## 🏗️ Project Structure
+## 🏗️ Architecture
+
+### System Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                         Frontend (Next.js)                       │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐         │
+│  │  Home Page   │  │  Chat Modal  │  │ Breed Browse │         │
+│  └──────────────┘  └──────────────┘  └──────────────┘         │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐         │
+│  │ Match Results│  │ Breed Detail │  │User Dashboard│         │
+│  └──────────────┘  └──────────────┘  └──────────────┘         │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              │ HTTPS/REST API
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    Backend API (FastAPI)                         │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │                    API Layer                              │  │
+│  │  /chat  /breeds  /recommendations  /auth  /video-queue   │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│                              │                                   │
+│  ┌─────────────────┬────────┴────────┬─────────────────┐      │
+│  │                 │                 │                 │      │
+│  ▼                 ▼                 ▼                 ▼      │
+│ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐         │
+│ │Conversation│ │ Matching │ │ Content  │ │  Image   │         │
+│ │  Agent    │ │  Engine  │ │Generator │ │ Service  │         │
+│ └──────────┘ └──────────┘ └──────────┘ └──────────┘         │
+│       │              │            │            │               │
+│       └──────────────┴────────────┴────────────┘               │
+│                      │                                         │
+│                      ▼                                         │
+│         ┌────────────────────────────┐                        │
+│         │   Google Gemini 2.0 Flash  │                        │
+│         │  (Conversational AI & NLG) │                        │
+│         └────────────────────────────┘                        │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                ┌─────────────┴─────────────┐
+                ▼                           ▼
+    ┌─────────────────────┐     ┌─────────────────────┐
+    │  PostgreSQL (Neon)  │     │   Redis (Upstash)   │
+    │  - User Data        │     │  - Session Cache    │
+    │  - Breed Data       │     │  - Video Queue      │
+    │  - Match History    │     │  - Rate Limiting    │
+    └─────────────────────┘     └─────────────────────┘
+                              │
+                              ▼
+                ┌─────────────────────────┐
+                │  Google Cloud Storage   │
+                │  - Breed Images (6.8K)  │
+                │  - Generated Videos     │
+                └─────────────────────────┘
+```
+
+### Technology Stack
+
+**Backend**:
+- **FastAPI**: High-performance async API framework
+- **PostgreSQL**: Relational database (Neon serverless)
+- **Redis**: Caching and job queue (Upstash)
+- **SQLAlchemy**: ORM for database operations
+- **Pydantic**: Data validation and serialization
+
+**AI/ML**:
+- **Google Gemini 2.0 Flash**: Conversational AI and content generation
+- **Google Veo 3.1 Fast**: Video generation for breed showcases
+- **Custom Matching Algorithm**: Weighted scoring across 17 traits
+
+**Frontend**:
+- **Next.js 14**: React framework with App Router
+- **TypeScript**: Type-safe development
+- **Tailwind CSS**: Utility-first styling
+- **Shadcn/UI**: Component library
+- **Recharts**: Data visualization
+
+**Infrastructure**:
+- **Railway**: Backend and worker deployment
+- **Vercel**: Frontend deployment
+- **Google Cloud Storage**: Image and video hosting
+
+### Project Structure
 
 ```
 backend/
@@ -212,9 +297,27 @@ curl -X POST http://localhost:8000/api/chat/message \
 
 ## 📊 Data Sources
 
-- **Breed Traits**: 195 breeds with 17 characteristics (1-5 scale)
-- **Trait Descriptions**: Detailed explanations of each trait
-- **Images**: Dog-Breeds-Dataset (GitHub)
+### Primary Dataset
+**Source**: [DataCamp Dog Breed Dataset](https://www.datacamp.com/datalab/w/0d8d2c35-e7b7-4e7c-b1e8-5f8e9c0d1a2b)
+- **195 dog breeds** with comprehensive trait data
+- **17 characteristics** per breed (rated 1-5 scale)
+  - Affectionate with Family, Good with Young Children, Good with Other Dogs
+  - Shedding Level, Coat Grooming Frequency, Drooling Level
+  - Coat Type, Coat Length, Openness to Strangers
+  - Playfulness Level, Watchdog/Protective Nature, Adaptability Level
+  - Trainability Level, Energy Level, Barking Level
+  - Mental Stimulation Needs, Size (Small/Medium/Large)
+
+### Image Dataset
+**Source**: [Dog-Breeds-Dataset on GitHub](https://github.com/maartenvandenbroeck/Dog-Breeds-Dataset)
+- **6,825 high-quality images** (35 per breed)
+- Hosted on Google Cloud Storage for production
+- Fallback to placedog.net for development
+
+### Additional Data
+- **Trait Descriptions**: Detailed explanations of each characteristic
+- **Breed Metadata**: Size, lifespan, common health issues
+- **Care Instructions**: Exercise, grooming, feeding requirements
 
 ## 🚧 Known Limitations
 
