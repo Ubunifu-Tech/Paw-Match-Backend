@@ -1,11 +1,15 @@
 # Nixpacks configuration for Railway deployment
 
 [phases.setup]
-nixPkgs = ["python311", "python311Packages.pip", "python311Packages.setuptools", "postgresql", "gcc"]
+nixPkgs = ["python311", "python311Packages.pip", "python311Packages.virtualenv", "postgresql", "gcc"]
 aptPkgs = ["postgresql-client"]
 
 [phases.install]
-cmds = ["python3 -m ensurepip --upgrade", "python3 -m pip install --upgrade pip", "python3 -m pip install -r requirements.txt"]
+cmds = [
+    "python3 -m venv /opt/venv",
+    ". /opt/venv/bin/activate && pip install --upgrade pip",
+    ". /opt/venv/bin/activate && pip install -r requirements.txt"
+]
 
 [start]
-cmd = "python3 -m alembic upgrade head && python3 -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"
+cmd = ". /opt/venv/bin/activate && python3 -m alembic upgrade head && python3 -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"
