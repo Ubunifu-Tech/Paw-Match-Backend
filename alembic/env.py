@@ -1,11 +1,15 @@
 from logging.config import fileConfig
 import sys
+import os
 from pathlib import Path
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
+
+# Set flag to prevent async engine creation when importing database module
+os.environ['ALEMBIC_CONFIG'] = '1'
 
 # Add parent directory to path to import app modules
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
