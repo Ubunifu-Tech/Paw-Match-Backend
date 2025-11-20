@@ -1,0 +1,35 @@
+{
+  "breed_name": "Labrador Retriever",
+  "breed_traits": {
+    "breed": "Labrador Retriever",
+    "affectionate_with_family": 5,
+    "good_with_young_children": 5,
+    "good_with_other_dogs": 4,
+    "shedding_level": 4,
+    "coat_grooming_frequency": 2,
+    "drooling_level": 3,
+    "coat_type": "Double",
+    "coat_length": "Short",
+    "openness_to_strangers": 5,
+    "playfulness_level": 5,
+    "watchdog_protective_nature": 3,
+    "adaptability_level": 5,
+    "trainability_level": 5,
+    "energy_level": 4,
+    "barking_level": 3,
+    "mental_stimulation_needs": 4
+  },
+  "user_profile": {
+    "living_situation": "house",
+    "experience_level": "intermediate",
+    "activity_level": "moderate",
+    "has_children": true,
+    "has_other_pets": false,
+    "yard_size": "large",
+    "time_available": "moderate"
+  },
+  "image_urls": [
+    "https://storage.googleapis.com/dawg-match/breed_images/retrievers_labrador/retrievers_labrador_001.jpg",
+    "https://storage.googleapis.com/dawg-match/breed_images/retrievers_labrador/retrievers_labrador_002.jpg"
+  ]
+}
