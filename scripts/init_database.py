@@ -18,10 +18,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from app.core.database import engine, Base
-from app.db.models import Session, ChatMessage, SavedResult
-from app.models.user_profile import User
-from app.models.breed import Breed, BreedImage
-from app.models.recommendation import Favorite
+from app.db.models import User, Session, ChatMessage, SavedResult, Breed, BreedImage
+from app.db.models.favorite import Favorite
+from app.db.models.api_usage import APIUsage
 from sqlalchemy import text
 
 

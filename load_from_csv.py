@@ -8,6 +8,8 @@ Run this on Railway after deployment.
 import asyncio
 import csv
 import sys
+import json
+import ast
 from pathlib import Path
 from datetime import datetime
 
@@ -65,17 +67,30 @@ async def load_from_csv():
                 breeds = list(reader)
                 
                 for breed in breeds:
+                    # Parse created_at
+                    try:
+                        created_at = datetime.fromisoformat(breed['created_at'])
+                    except (ValueError, TypeError):
+                        created_at = datetime.now()
+                    
+                    # Parse traits (convert python dict string to json string)
+                    try:
+                        traits_dict = ast.literal_eval(breed['traits'])
+                        traits_json = json.dumps(traits_dict)
+                    except (ValueError, SyntaxError):
+                        # Fallback if it's already json or invalid
+                        traits_json = breed['traits']
+
                     await conn.execute(text("""
                         INSERT INTO breeds (id, name, traits, description, created_at)
                         VALUES (:id, :name, :traits, :description, :created_at)
                     """), {
                         'id': breed['id'],
                         'name': breed['name'],
-                        'traits': breed['traits'],
+                        'traits': traits_json,
                         'description': breed['description'] if breed['description'] else None,
-                        'created_at': breed['created_at']
+                        'created_at': created_at
                     })
-            
             print(f"✅ Loaded {len(breeds)} breeds")
             
             # Load breed images
@@ -89,6 +104,12 @@ async def load_from_csv():
                 for i in range(0, len(images), batch_size):
                     batch = images[i:i+batch_size]
                     for image in batch:
+                        # Parse created_at
+                        try:
+                            created_at = datetime.fromisoformat(image['created_at'])
+                        except (ValueError, TypeError):
+                            created_at = datetime.now()
+                            
                         await conn.execute(text("""
                             INSERT INTO breed_images (id, breed_id, url, image_number, breed_folder, created_at)
                             VALUES (:id, :breed_id, :url, :image_number, :breed_folder, :created_at)
@@ -98,11 +119,10 @@ async def load_from_csv():
                             'url': image['url'],
                             'image_number': int(image['image_number']),
                             'breed_folder': image['breed_folder'],
-                            'created_at': image['created_at']
+                            'created_at': created_at
                         })
-                    print(f"   Progress: {min(i+batch_size, len(images))}/{len(images)} images")
-            
-            print(f"✅ Loaded {len(images)} breed images")
+                    print(f"  Loaded {min(i+batch_size, len(images))}/{len(images)} images...", end='\r')
+            print(f"\n✅ Loaded {len(images)} images")
             
             # Verify
             print("\n✅ VERIFICATION")
