@@ -150,14 +150,14 @@ Return ONLY valid JSON, no other text."""
         if self.breed_context:
             dataset_info = f"\n\nDATASET CONTEXT (for your reference only):\n{self.breed_context}\n"
         
-        prompt = f"""You are a friendly dog breed recommendation assistant. Your goal is to learn about the user's lifestyle and preferences through natural conversation.
+        prompt = f"""You are a friendly dog breed recommendation assistant. Your goal is to help users find their perfect dog through natural conversation.
 
 CRITICAL RULES:
 1. Do NOT mention specific dog breeds in your responses
 2. Do NOT ask about information you already have (see "INFORMATION ALREADY GATHERED" below)
-3. Only ask about missing information (see "STILL NEED TO LEARN" below)
-4. Ask ONE question at a time
-5. Be conversational and friendly
+3. Be conversational and helpful - don't interrogate
+4. If user seems ready or impatient, offer to show matches with what you have
+5. Let users know they can say "show me matches" or "that's enough" anytime
 {dataset_info}
 FULL CONVERSATION HISTORY:
 {context}
@@ -167,13 +167,18 @@ User's latest message: {user_message}
 INFORMATION ALREADY GATHERED:
 {known_info_str}
 
-STILL NEED TO LEARN:
+STILL NEED TO LEARN (optional):
 {missing_info_str}
 
-Based on what you already know and what's still missing, respond naturally. If you have enough information (at least living space, activity level, and dog experience), acknowledge their answer and ask if there's anything else they'd like to share. Otherwise, ask about ONE missing piece of information.
+RESPONSE GUIDELINES:
+- If you have ANY useful information, you can make suggestions
+- Acknowledge their answer warmly
+- If missing critical info (living space, activity level), gently ask about it
+- If you have the basics, offer to show matches OR ask ONE optional question
+- Remind them they can see matches anytime: "I can show you some great matches now, or if you'd like, I can ask a couple more questions to refine the results. What would you prefer?"
 
-Keep responses friendly, concise (2-3 sentences), and conversational. Do NOT repeat questions about information you already have."""
-
+Keep responses friendly, concise (2-3 sentences), and conversational. Make users feel in control."""
+        
         return self.generate_text(prompt)
     
     def should_make_recommendation(
@@ -183,7 +188,23 @@ Keep responses friendly, concise (2-3 sentences), and conversational. Do NOT rep
     ) -> bool:
         """Determine if enough information has been gathered"""
         
-        # Core required fields - must have all 3
+        # Check if user explicitly wants suggestions now
+        if conversation_history:
+            last_message = conversation_history[-1].get('content', '').lower()
+            suggestion_triggers = [
+                'show me', 'suggest', 'recommend', 'what breeds', 'give me',
+                'ready', "that's enough", "that's all", 'just show', 'skip',
+                'get matches', 'see results', 'find breeds', 'good enough'
+            ]
+            if any(trigger in last_message for trigger in suggestion_triggers):
+                # User wants suggestions - check if we have MINIMUM info
+                has_any_info = any(current_profile.get(field) for field in 
+                                 ['living_space', 'activity_level', 'dog_experience', 
+                                  'has_children', 'allergies'])
+                if has_any_info:
+                    return True
+        
+        # Core required fields - must have all 3 for automatic completion
         core_required = ['living_space', 'activity_level', 'dog_experience']
         core_gathered = sum(1 for field in core_required if current_profile.get(field))
         
@@ -191,10 +212,12 @@ Keep responses friendly, concise (2-3 sentences), and conversational. Do NOT rep
         important_fields = ['has_children', 'has_yard', 'allergies', 'grooming_tolerance']
         important_gathered = sum(1 for field in important_fields if current_profile.get(field) is not None)
         
-        # Need all core fields + at least 2 important fields + minimum 5 conversation turns
-        return (core_gathered == 3 and 
-                important_gathered >= 2 and 
-                len(conversation_history) >= 5)
+        # Auto-complete: all core fields + at least 2 important fields + minimum 5 turns
+        # OR: user has been chatting a lot (10+ turns) with decent info
+        auto_complete = (core_gathered == 3 and important_gathered >= 2 and len(conversation_history) >= 5)
+        long_chat = (len(conversation_history) >= 10 and core_gathered >= 2)
+        
+        return auto_complete or long_chat
     
     def summarize_conversation(self, messages: List[Dict]) -> str:
         """
