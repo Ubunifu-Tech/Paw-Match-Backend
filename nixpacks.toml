@@ -1,8 +1,7 @@
-# Nixpacks will auto-detect Python and run: pip install -r requirements.txt
-# Set "Root Directory" to "backend" in Railway Service Settings
+# Nixpacks configuration for Railway deployment
 
 [phases.setup]
-nixPkgs = ["python311", "postgresql", "gcc"]
+nixPkgs = ["python311", "python311Packages.pip", "postgresql", "gcc"]
 aptPkgs = ["postgresql-client"]
 
 [phases.install]
