@@ -27,66 +27,6 @@ async def get_all_breeds():
     return {"breeds": breeds}
 
 
-@router.get("/list")
-async def get_breeds_list():
-    """
-    Get list of all breeds with basic info (name, traits, first image).
-    Optimized for browse page.
-    
-    Returns:
-        dict: Dictionary with 'breeds' array containing breed objects
-        
-    Example:
-        >>> GET /api/breeds/list
-        {
-            "breeds": [
-                {
-                    "name": "Labrador Retriever",
-                    "size": "Large",
-                    "energy_level": 5,
-                    "good_with_children": 5,
-                    "image": "https://storage.googleapis.com/..."
-                },
-                ...
-            ]
-        }
-    """
-    from app.core.database import AsyncSessionLocal
-    from app.db.models import Breed, BreedImage
-    from sqlalchemy import select
-    
-    async with AsyncSessionLocal() as db:
-        # Get all breeds with their first image
-        result = await db.execute(
-            select(Breed).order_by(Breed.name)
-        )
-        breeds = result.scalars().all()
-        
-        breed_list = []
-        for breed in breeds:
-            # Get first image
-            img_result = await db.execute(
-                select(BreedImage.url)
-                .where(BreedImage.breed_id == breed.id)
-                .order_by(BreedImage.image_number)
-                .limit(1)
-            )
-            first_image = img_result.scalar_one_or_none()
-            
-            breed_list.append({
-                "name": breed.name,
-                "energy_level": breed.traits.get("energy_level", 3),
-                "good_with_children": breed.traits.get("good_with_young_children", 3),
-                "good_with_other_dogs": breed.traits.get("good_with_other_dogs", 3),
-                "shedding_level": breed.traits.get("shedding_level", 3),
-                "grooming_needs": breed.traits.get("coat_grooming_frequency", 3),
-                "trainability": breed.traits.get("trainability_level", 3),
-                "image": first_image
-            })
-        
-        return {"breeds": breed_list}
-
-
 @router.get("/{breed_name:path}")
 async def get_breed_details(breed_name: str):
     """

@@ -28,7 +28,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
-from app.api import chat, recommendations, breeds, video, users, favorites, video_queue, usage
+from app.api import chat, recommendations, breeds, users, favorites, video_queue
 from app.routes import research
 from app.core.config import get_settings
 from app.middleware.error_handler import (
@@ -46,8 +46,8 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url="/redoc",
     contact={
-        "name": "PawMatch Team",
-        "email": "support@pawmatch.ai",
+        "name": "Richard Pallangyo",
+        "email": "rapaugustino@gmail.com",
     },
     license_info={
         "name": "MIT",
@@ -66,11 +66,9 @@ app.include_router(users.router, prefix="/api")
 app.include_router(chat.router, prefix="/api")
 app.include_router(recommendations.router, prefix="/api")
 app.include_router(breeds.router, prefix="/api")
-app.include_router(video.router, prefix="/api")
 app.include_router(favorites.router, prefix="/api")
 app.include_router(research.router, prefix="/api")
 app.include_router(video_queue.router, prefix="/api")
-app.include_router(usage.router, prefix="/api")
 
 # Add exception handlers
 app.add_exception_handler(RequestValidationError, validation_exception_handler)

@@ -1,4 +1,4 @@
-# 🐾 PawMatch - AI-Powered Dog Breed Matching
+# PawMatch - AI-Powered Dog Breed Matching
 
 **Find Your Perfect Paw-tner!**
 
@@ -6,14 +6,7 @@
 
 AI-powered dog breed matching system using FastAPI, Google Gemini 2.0 Flash, PostgreSQL, and Redis. PawMatch helps users discover their ideal canine companion through conversational AI, smart matching algorithms, and personalized content generation.
 
-## ✅ Status
-
-**🔐 Security Audit**: PASSED (All 7 critical issues resolved)  
-**🚀 Deployment**: READY (Railway deployment guide included)  
-**🧪 Testing**: COMPLETE (12-step automated workflow test)  
-**📚 Documentation**: COMPREHENSIVE (6 guides created)
-
-## 🚀 Features
+## Features
 
 ### Core Functionality
 - **Conversational AI**: Natural language chat interface using Google Gemini 2.0
@@ -29,7 +22,7 @@ AI-powered dog breed matching system using FastAPI, Google Gemini 2.0 Flash, Pos
 - **Cross-Session Memory**: Personalization across multiple sessions
 - **Data Privacy**: GDPR-compliant one-click data deletion
 
-## 📋 Requirements
+## Requirements
 
 - Python 3.10+
 - Google Gemini API key
@@ -55,7 +48,7 @@ cp .env.example .env
 # Add your GEMINI_API_KEY to .env
 ```
 
-## ⚙️ Configuration
+## Configuration
 
 Create a `.env` file in the backend directory:
 
@@ -64,7 +57,7 @@ GEMINI_API_KEY=your_gemini_api_key_here
 FRONTEND_URL=http://localhost:3000
 ```
 
-## 🏃 Running the Server
+## Running the Server
 
 ```bash
 # Make sure virtual environment is activated
@@ -76,43 +69,24 @@ uvicorn app.main:app --reload
 # Server will start at http://localhost:8000
 ```
 
-## 📚 API Documentation
+## API Documentation
 
-Once the server is running, visit:
+### Live API Documentation
+**Explore all endpoints interactively**: [https://paw-match-production.up.railway.app/docs](https://paw-match-production.up.railway.app/docs)
+
+The live Swagger UI documentation provides:
+- Complete list of all endpoints
+- Interactive API testing
+- Request/response schemas
+- Authentication requirements
+- Example requests and responses
+
+### Local Development
+When running locally, visit:
 - **Swagger UI**: http://localhost:8000/docs
 - **ReDoc**: http://localhost:8000/redoc
 
-## 🔌 API Endpoints
-
-### Core Endpoints
-
-- `GET /` - API information
-- `GET /health` - Health check
-
-### Breeds
-
-- `GET /api/breeds/` - List all 195 dog breeds
-- `GET /api/breeds/{breed_name}` - Get breed details with traits and images
-
-### Chat
-
-- `POST /api/chat/message` - Send a chat message
-  ```json
-  {
-    "message": "I'm looking for a dog",
-    "session_id": "optional-session-id"
-  }
-  ```
-- `GET /api/chat/session/{session_id}` - Get session information
-
-### Recommendations
-
-- `GET /api/recommendations/{session_id}` - Get top 3 breed recommendations
-  - Returns match scores, explanations, pros/cons
-  - Includes "Day in the Life" personalized content
-  - Includes breed images
-
-## 🖼️ Image Handling
+## Image Handling
 
 The backend uses the [Dog-Breeds-Dataset](https://github.com/maartenvandenbroeck/Dog-Breeds-Dataset) (5.32GB, 356 breeds, 35 images each).
 
@@ -124,7 +98,7 @@ The backend uses the [Dog-Breeds-Dataset](https://github.com/maartenvandenbroeck
 
 **Note:** Some breeds may have fewer than 35 images if not available in the original dataset.
 
-## 🏗️ Architecture
+## Architecture
 
 ### System Architecture
 
@@ -359,12 +333,14 @@ This project is part of a competition submission.
 
 ## 🤝 Contributing
 
-This is a competition project. For questions or issues, please contact the development team.
+This is a competition project. For questions or issues, contact the developer:
+- **Developer**: Richard Pallangyo
+- **Email**: rapaugustino@gmail.com
 
 ## 📧 Support
 
 For API issues or questions:
 1. Check server logs for error details
-2. Visit `/docs` endpoint for interactive API documentation
+2. Visit live API docs: [https://paw-match-production.up.railway.app/docs](https://paw-match-production.up.railway.app/docs)
 3. Test `/health` endpoint to verify server status
-4. Review the README for setup instructions
+4. Contact developer: rapaugustino@gmail.com
