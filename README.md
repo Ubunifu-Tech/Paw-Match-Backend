@@ -114,17 +114,15 @@ Once the server is running, visit:
 
 ## 🖼️ Image Handling
 
-The backend integrates with the [Dog-Breeds-Dataset](https://github.com/maartenvandenbroeck/Dog-Breeds-Dataset) (5.32GB, 356 breeds, 35 images each).
+The backend uses the [Dog-Breeds-Dataset](https://github.com/maartenvandenbroeck/Dog-Breeds-Dataset) (5.32GB, 356 breeds, 35 images each).
 
 **Current Implementation:**
-- Uses placeholder images (`placedog.net`) for demo purposes
-- Set `use_placeholder = False` in `image_service.py` to use actual dataset
+- Real breed images hosted on Google Cloud Storage
+- 6,825+ high-quality images (35 per breed for our 195 breeds)
+- Served via CDN for fast loading
+- Fallback to placeholder if image unavailable
 
-**For Production:**
-1. Clone the Dog-Breeds-Dataset repository
-2. Download images for the 195 breeds in your dataset
-3. Serve images from local storage or CDN
-4. Update `image_service.py` with correct paths
+**Note:** Some breeds may have fewer than 35 images if not available in the original dataset.
 
 ## 🏗️ Architecture
 
@@ -321,43 +319,39 @@ curl -X POST http://localhost:8000/api/chat/message \
 
 ## 🚧 Known Limitations
 
-1. **Images**: Currently using placeholders; actual dataset needs to be downloaded
-2. **Session Storage**: In-memory only (resets on server restart)
-3. **Rate Limiting**: Not implemented (consider for production)
-4. **Caching**: No caching layer (consider Redis for production)
+1. **Image Coverage**: Some breeds may have fewer images if not available in source dataset
+2. **Video Generation**: Temporarily disabled to avoid API costs during development
+3. **Email Notifications**: Not yet implemented
+4. **Breed Comparison**: Side-by-side comparison feature not yet available
+
+## ✅ Implemented Features
+
+- ✅ **Persistent session storage** (PostgreSQL)
+- ✅ **Image CDN integration** (Google Cloud Storage)
+- ✅ **Rate limiting** (User-based: 50/day anonymous, 200/day registered)
+- ✅ **User authentication** (JWT-based with email/password)
+- ✅ **Save favorite breeds** (User dashboard)
+- ✅ **Video generation** (Google Veo 3.1 - temporarily disabled to save costs)
 
 ## 🔮 Future Enhancements
 
-- [ ] Persistent session storage (Redis/Database)
-- [ ] Image caching and CDN integration
-- [ ] Rate limiting and API throttling
-- [ ] User authentication
-- [ ] Breed comparison feature
-- [ ] Save favorite breeds
+- [ ] Breed comparison feature (side-by-side)
 - [ ] Email recommendations
-- [ ] Video generation for "Day in the Life"
+- [ ] Mobile apps (iOS/Android)
+- [ ] Community features (reviews, forums)
+- [ ] Breeder verification system
 
-## 📚 Documentation
+## 📚 API Documentation
 
-Comprehensive guides are available in the `docs/` folder:
+Once the server is running, comprehensive API documentation is available at:
+- **Swagger UI**: http://localhost:8000/docs
+- **ReDoc**: http://localhost:8000/redoc
 
-- **[Application Workflow](docs/APPLICATION_WORKFLOW.md)** - Complete user journey and API flows
-- **[Deployment Summary](docs/DEPLOYMENT_SUMMARY.md)** - Quick deployment reference
-- **[Railway Deployment](docs/RAILWAY_DEPLOYMENT.md)** - Step-by-step Railway deployment
-- **[Frontend Integration](docs/FRONTEND_INTEGRATION_GUIDE.md)** - API integration for frontend
-- **[Security Guide](docs/SECURITY.md)** - Security implementation details
-- **[Security Audit Report](docs/SECURITY_AUDIT_REPORT.md)** - Audit findings and fixes
-- **[Database Setup](docs/DATABASE_SETUP.md)** - Database configuration
-- **[User Features](docs/USER_FEATURES_IMPLEMENTATION.md)** - User management features
-
-## 🧪 Testing
-
-Run the complete workflow test:
-```bash
-python3 test_complete_workflow.py
-```
-
-This tests all 12 critical workflows including authentication, chat, recommendations, and security.
+These interactive docs allow you to:
+- Explore all available endpoints
+- Test API calls directly from the browser
+- View request/response schemas
+- Understand authentication requirements
 
 ## 📝 License
 
@@ -369,8 +363,8 @@ This is a competition project. For questions or issues, please contact the devel
 
 ## 📧 Support
 
-For API issues or questions, check:
-1. Server logs
-2. `/docs` endpoint for API documentation
-3. Documentation in `docs/` folder
-3. `/health` endpoint for server status
+For API issues or questions:
+1. Check server logs for error details
+2. Visit `/docs` endpoint for interactive API documentation
+3. Test `/health` endpoint to verify server status
+4. Review the README for setup instructions
