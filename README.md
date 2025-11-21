@@ -217,7 +217,7 @@ backend/
 └── README.md
 ```
 
-## 🧠 Matching Algorithm
+## Matching Algorithm
 
 The matching engine uses a weighted scoring system:
 
@@ -229,7 +229,7 @@ The matching engine uses a weighted scoring system:
 - **Pet Compatibility** (10%): Good with other dogs
 - **Allergy Considerations**: Deal-breaker filtering
 
-## 🤖 AI Features
+## AI Features
 
 ### Conversational Agent (LangGraph)
 - Multi-turn dialogue management
@@ -241,7 +241,7 @@ The matching engine uses a weighted scoring system:
 - Daily care tips
 - Social media-ready captions
 
-## 🔒 Error Handling
+## Error Handling
 
 The API includes comprehensive error handling:
 - Validation errors (422)
@@ -291,31 +291,30 @@ curl -X POST http://localhost:8000/api/chat/message \
 - **Breed Metadata**: Size, lifespan, common health issues
 - **Care Instructions**: Exercise, grooming, feeding requirements
 
-## 🚧 Known Limitations
+## Known Limitations
 
 1. **Image Coverage**: Some breeds may have fewer images if not available in source dataset
 2. **Video Generation**: Temporarily disabled to avoid API costs during development
 3. **Email Notifications**: Not yet implemented
-4. **Breed Comparison**: Side-by-side comparison feature not yet available
 
-## ✅ Implemented Features
+## Implemented Features
 
-- ✅ **Persistent session storage** (PostgreSQL)
-- ✅ **Image CDN integration** (Google Cloud Storage)
-- ✅ **Rate limiting** (User-based: 50/day anonymous, 200/day registered)
-- ✅ **User authentication** (JWT-based with email/password)
-- ✅ **Save favorite breeds** (User dashboard)
-- ✅ **Video generation** (Google Veo 3.1 - temporarily disabled to save costs)
+- **Persistent session storage** (PostgreSQL)
+- **Image CDN integration** (Google Cloud Storage)
+- **Rate limiting** (User-based: 50/day anonymous, 200/day registered)
+- **User authentication** (JWT-based with email/password)
+- **Save favorite breeds** (User dashboard)
+- **Breed comparison** (Side-by-side comparison of multiple breeds)
 
-## 🔮 Future Enhancements
+## Future Enhancements
 
-- [ ] Breed comparison feature (side-by-side)
+- [ ] Video generation for "Day in the Life" (Google Veo 3.1)
 - [ ] Email recommendations
 - [ ] Mobile apps (iOS/Android)
 - [ ] Community features (reviews, forums)
 - [ ] Breeder verification system
 
-## 📚 API Documentation
+## API Documentation
 
 Once the server is running, comprehensive API documentation is available at:
 - **Swagger UI**: http://localhost:8000/docs
@@ -327,17 +326,17 @@ These interactive docs allow you to:
 - View request/response schemas
 - Understand authentication requirements
 
-## 📝 License
+## License
 
 This project is part of a competition submission.
 
-## 🤝 Contributing
+## Contributing
 
 This is a competition project. For questions or issues, contact the developer:
 - **Developer**: Richard Pallangyo
 - **Email**: rapaugustino@gmail.com
 
-## 📧 Support
+## Support
 
 For API issues or questions:
 1. Check server logs for error details
