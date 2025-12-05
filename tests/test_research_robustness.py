@@ -110,13 +110,13 @@ class TestRateLimitConfig:
     
     def test_default_limits(self):
         """Test default monthly limits"""
-        assert RateLimitConfig.MONTHLY_LIMITS['research'] == 5
+        assert RateLimitConfig.MONTHLY_LIMITS['research'] == 2
         assert RateLimitConfig.MONTHLY_LIMITS['chat_gemini'] == 5
     
     def test_get_monthly_limit(self):
         """Test getting monthly limit for API type"""
         limit = RateLimitConfig.get_monthly_limit('research')
-        assert limit == 5
+        assert limit == 2
         
         # Test unknown API type gets default
         limit = RateLimitConfig.get_monthly_limit('unknown_api')
@@ -133,7 +133,7 @@ class TestRateLimitConfig:
     def test_daily_limits(self):
         """Test daily limits"""
         daily = RateLimitConfig.get_daily_limit('research')
-        assert daily == 3
+        assert daily == 1
 
 
 @pytest.mark.asyncio
