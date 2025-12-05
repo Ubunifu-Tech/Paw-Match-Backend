@@ -35,8 +35,8 @@ class RateLimitConfig:
     
     # Daily limits (additional safety net)
     DAILY_LIMITS: Dict[str, int] = {
-        'research': 1,  # Consistent with monthly limit of 2
-        'chat_gemini': 1,
+        'research': 1,  # Reduced for cost safety, no more than 1/day
+        'chat_gemini': 1,  # Reduced from 3 for cost safety
         'video_generation': 0,
         'image_generation': 0,
     }
