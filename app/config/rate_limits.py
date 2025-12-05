@@ -20,7 +20,7 @@ class RateLimitConfig:
     # Monthly limits per user for external API calls
     MONTHLY_LIMITS: Dict[str, int] = {
         'research': 2,           # Reduced for cost safety
-        'chat_gemini': 5,        # Reduced for cost safety
+        'chat_gemini': 5,        # Limit unchanged
         'video_generation': 0,   # Disabled for cost safety
         'image_generation': 0,   # Disabled for cost safety
     }
@@ -35,8 +35,8 @@ class RateLimitConfig:
     
     # Daily limits (additional safety net)
     DAILY_LIMITS: Dict[str, int] = {
-        'research': 1,
-        'chat_gemini': 3,
+        'research': 1,  # Reduced for cost safety, no more than 1/day
+        'chat_gemini': 1,  # Reduced from 3 for cost safety
         'video_generation': 0,
         'image_generation': 0,
     }
