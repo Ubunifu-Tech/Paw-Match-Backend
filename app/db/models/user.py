@@ -78,7 +78,7 @@ class User(Base):
         
         self.api_calls_today += 1
     
-    def can_make_api_call(self, daily_limit: int = 100) -> bool:
+    def can_make_api_call(self, daily_limit: int = 20) -> bool:
         """Check if user can make another API call."""
         from datetime import timezone
         now = datetime.now(timezone.utc)

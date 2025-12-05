@@ -19,10 +19,10 @@ class RateLimitConfig:
     
     # Monthly limits per user for external API calls
     MONTHLY_LIMITS: Dict[str, int] = {
-        'research': 5,           # Breed research with web search
-        'chat_gemini': 5,        # Chat messages that use Gemini (if not using local matching)
-        'video_generation': 5,   # Video generation requests
-        'image_generation': 5,   # Image generation (if implemented)
+        'research': 2,           # Reduced for cost safety
+        'chat_gemini': 5,        # Reduced for cost safety
+        'video_generation': 0,   # Disabled for cost safety
+        'image_generation': 0,   # Disabled for cost safety
     }
     
     # Override for premium users (future feature)
@@ -35,10 +35,10 @@ class RateLimitConfig:
     
     # Daily limits (additional safety net)
     DAILY_LIMITS: Dict[str, int] = {
-        'research': 3,
-        'chat_gemini': 10,
-        'video_generation': 2,
-        'image_generation': 5,
+        'research': 1,
+        'chat_gemini': 3,
+        'video_generation': 0,
+        'image_generation': 0,
     }
     
     @classmethod
