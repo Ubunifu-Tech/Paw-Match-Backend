@@ -28,7 +28,7 @@ AI-powered dog breed matching system using FastAPI, Google Gemini 2.0 Flash, Pos
 - Google Gemini API key
 - Virtual environment (recommended)
 
-## 🛠️ Installation
+## Installation
 
 ```bash
 # Navigate to backend directory
@@ -70,9 +70,6 @@ uvicorn app.main:app --reload
 ```
 
 ## API Documentation
-
-### Live API Documentation
-**Explore all endpoints interactively**: [https://paw-match-production.up.railway.app/docs](https://paw-match-production.up.railway.app/docs)
 
 The live Swagger UI documentation provides:
 - Complete list of all endpoints
@@ -249,7 +246,7 @@ The API includes comprehensive error handling:
 - Internal server errors (500)
 - Detailed error messages in development
 
-## 🧪 Testing
+## Testing
 
 ```bash
 # Test health endpoint
@@ -267,7 +264,7 @@ curl -X POST http://localhost:8000/api/chat/message \
   -d '{"message": "I want a family-friendly dog"}'
 ```
 
-## 📊 Data Sources
+## Data Sources
 
 ### Primary Dataset
 **Source**: [DataCamp Dog Breed Dataset](https://www.datacamp.com/datalab/w/0d8d2c35-e7b7-4e7c-b1e8-5f8e9c0d1a2b)
